@@ -1,147 +1,186 @@
 import streamlit as st
 
 # Configuration de la page
-st.set_page_config(page_title="Awa's House | Boutique Officielle", page_icon="✨", layout="wide")
+st.set_page_config(page_title="AWA'S HOUSE | EXCLUSIVE", page_icon="✨", layout="wide")
 
-# --- INITIALISATION DU PANIER ---
+# --- GESTION DU PANIER ---
 if 'cart' not in st.session_state:
     st.session_state.cart = []
 
+def add_to_cart(name, price):
+    st.session_state.cart.append({"nom": name, "prix": price})
+    st.toast(f"💎 {name} ajouté au panier")
+
 # ---------------------------------------------------------
-# DESIGN "PRESTIGE" - RETOUR À TA FORME ORIGINALE
+# LE DESIGN "MALADE MENTAL" - LUXE & IMPACT
 # ---------------------------------------------------------
 st.markdown("""
 <style>
-    @import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300;600&family=Montserrat:wght@300;600&display=swap');
+    @import url('https://fonts.googleapis.com/css2?family=Syncopate:wght@700&family=Playfair+Display:ital,wght@0,900;1,900&family=Outfit:wght@100;300;600&display=swap');
 
+    /* Fond Premium */
     [data-testid="stAppViewContainer"] {
-        background-color: #FCFAFB;
-        font-family: 'Montserrat', sans-serif;
+        background: #0A0A0A;
+        color: white;
+        font-family: 'Outfit', sans-serif;
     }
 
-    /* Ta structure de Header */
+    /* HEADER STYLE "MAGAZINE" */
     .hero-banner {
-        background: linear-gradient(rgba(255,255,255,0.5), rgba(255,255,255,0.5)), 
-                    url('https://images.unsplash.com/photo-1520006403993-4744f0c846a1?q=80&w=2000');
+        background: linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.5)), 
+                    url('https://images.unsplash.com/photo-1618220179428-22790b461013?w=1600');
         background-size: cover;
-        height: 350px;
+        background-position: center;
+        height: 450px;
         display: flex;
         flex-direction: column;
         justify-content: center;
         align-items: center;
-        border-bottom: 2px solid #D4AF37;
-        margin-bottom: 40px;
+        border-radius: 0 0 80px 80px;
+        border-bottom: 3px solid #D4AF37;
+        margin-bottom: 60px;
     }
 
-    .brand-name {
-        font-family: 'Cormorant Garamond', serif;
-        font-size: clamp(40px, 8vw, 80px);
-        letter-spacing: 10px;
-        color: #1a1a1a;
-        text-transform: uppercase;
+    .main-title {
+        font-family: 'Syncopate', sans-serif;
+        font-size: 8vw;
+        letter-spacing: -2px;
+        background: linear-gradient(to right, #D4AF37, #FFF, #D4AF37);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        margin: 0;
     }
 
-    /* Ta barre de services horizontale */
-    .service-bar {
+    /* SERVICES EN VERRE (GLASSMORPHISM) */
+    .service-container {
         display: flex;
         justify-content: space-around;
-        padding: 30px;
-        background: white;
-        border-radius: 15px;
-        box-shadow: 0 5px 15px rgba(0,0,0,0.05);
-        margin-bottom: 50px;
+        gap: 20px;
+        margin: -100px auto 80px;
+        max-width: 90%;
     }
-    .service-item { text-align: center; }
-    .service-icon { font-size: 24px; margin-bottom: 5px; }
-    .service-label { font-size: 10px; letter-spacing: 2px; font-weight: 600; color: #888; text-transform: uppercase; }
-
-    /* Titres de sections */
-    .section-title {
-        font-family: 'Cormorant Garamond', serif;
-        font-size: 40px;
+    .service-card {
+        background: rgba(255, 255, 255, 0.05);
+        backdrop-filter: blur(15px);
+        border: 1px solid rgba(212, 175, 55, 0.3);
+        padding: 40px 20px;
+        border-radius: 30px;
         text-align: center;
-        margin-bottom: 40px;
-        color: #1a1a1a;
+        flex: 1;
+        transition: 0.4s ease;
+    }
+    .service-card:hover { transform: translateY(-10px); border-color: #D4AF37; box-shadow: 0 20px 40px rgba(212,175,55,0.2); }
+
+    /* TITRES DE SECTIONS */
+    .section-header {
+        font-family: 'Playfair Display', serif;
+        font-size: 60px;
+        font-style: italic;
+        color: #D4AF37;
+        margin: 60px 0 40px 5%;
+        border-left: 4px solid white;
+        padding-left: 20px;
     }
 
-    /* Cartes produits pro */
-    .product-card {
-        background: white;
-        padding: 10px;
-        border-radius: 10px;
-        transition: 0.3s;
-        border-bottom: 1px solid #eee;
+    /* CARTES PRODUITS NÉON-GOLD */
+    .product-box {
+        position: relative;
+        border-radius: 40px;
+        overflow: hidden;
+        background: #111;
+        border: 1px solid #222;
+        transition: 0.5s;
     }
-    .product-card:hover { transform: translateY(-5px); box-shadow: 0 10px 20px rgba(0,0,0,0.05); }
+    .product-box:hover { border-color: #D4AF37; transform: scale(1.02); }
     
-    .price-tag { color: #D4AF37; font-weight: 600; font-size: 14px; margin-top: 10px; }
-
-    /* Boutons de commande */
-    div.stButton > button {
-        background-color: #1a1a1a !important;
-        color: white !important;
-        border-radius: 5px !important;
-        border: none !important;
-        width: 100% !important;
-        font-size: 11px !important;
-        letter-spacing: 1px !important;
+    .product-box img {
+        width: 100%;
+        height: 450px;
+        object-fit: cover;
+        opacity: 0.7;
+        transition: 0.5s;
     }
-    div.stButton > button:hover { background-color: #D4AF37 !important; }
+    .product-box:hover img { opacity: 1; }
 
+    .price-overlay {
+        position: absolute;
+        top: 20px;
+        right: 20px;
+        background: #D4AF37;
+        color: black;
+        padding: 5px 15px;
+        font-weight: 900;
+        font-family: 'Syncopate', sans-serif;
+        border-radius: 10px;
+    }
+
+    /* BOUTONS STYLE "MALADE" */
+    div.stButton > button {
+        background: transparent !important;
+        color: white !important;
+        border: 2px solid #D4AF37 !important;
+        border-radius: 100px !important;
+        font-family: 'Syncopate', sans-serif !important;
+        font-size: 10px !important;
+        padding: 15px 0 !important;
+        width: 100% !important;
+        margin-top: 10px !important;
+        transition: 0.4s !important;
+    }
+    div.stButton > button:hover {
+        background: #D4AF37 !important;
+        color: black !important;
+        box-shadow: 0 0 30px rgba(212,175,55,0.6) !important;
+    }
 </style>
 """, unsafe_allow_html=True)
 
-# --- FONCTION PANIER ---
-def add_item(name, price):
-    st.session_state.cart.append({"nom": name, "prix": price})
-    st.toast(f"✨ {name} ajouté !")
-
 # ---------------------------------------------------------
-# STRUCTURE DE TA PAGE
+# STRUCTURE DU SITE
 # ---------------------------------------------------------
 
-# 1. HEADER (L'entrée du magasin)
-st.markdown('<div class="hero-banner"><div class="brand-name">Awa\'s House</div><div style="letter-spacing:5px; font-size:12px; color:#555;">QUALITÉ & ÉLÉGANCE</div></div>', unsafe_allow_html=True)
+# 1. HEADER
+st.markdown('<div class="hero-banner"><h1 class="main-title">AWA\'S HOUSE</h1><p style="letter-spacing:10px; opacity:0.6;">L\'EMPIRE DU VOILE</p></div>', unsafe_allow_html=True)
 
-# 2. SERVICES (Tes icônes)
+# 2. SERVICES
 st.markdown("""
-<div class="service-bar">
-    <div class="service-item"><div class="service-icon">🏺</div><div class="service-label">Prestige</div></div>
-    <div class="service-item"><div class="service-icon">🛍️</div><div class="service-label">Retrait</div></div>
-    <div class="service-item"><div class="service-icon">🚚</div><div class="service-label">Livraison</div></div>
+<div class="service-container">
+    <div class="service-card"><div style="font-size:30px;">🏺</div><div style="font-weight:900; margin-top:10px; letter-spacing:2px;">PRESTIGE</div></div>
+    <div class="service-card"><div style="font-size:30px;">🛍️</div><div style="font-weight:900; margin-top:10px; letter-spacing:2px;">RETRAIT</div></div>
+    <div class="service-card"><div style="font-size:30px;">🚚</div><div style="font-weight:900; margin-top:10px; letter-spacing:2px;">LIVRAISON</div></div>
 </div>
 """, unsafe_allow_html=True)
 
 # 3. PANIER (SIDEBAR)
 with st.sidebar:
-    st.markdown("## 🛒 Votre Commande")
+    st.markdown("<h2 style='color:#D4AF37; font-family:Syncopate;'>VOTRE PANIER</h2>", unsafe_allow_html=True)
     if not st.session_state.cart:
         st.write("Le panier est vide.")
     else:
         total = 0
         for i, item in enumerate(st.session_state.cart):
-            st.write(f"**{item['nom']}** - {item['prix']} FCFA")
+            st.write(f"🔹 **{item['nom']}** ({item['prix']} FCFA)")
             total += int(item['prix'].replace(".", ""))
         st.markdown("---")
-        st.subheader(f"Total: {total:,} FCFA")
+        st.subheader(f"TOTAL : {total:,} FCFA")
         
-        nom = st.text_input("Nom complet")
-        adresse = st.text_input("Adresse de livraison")
+        nom = st.text_input("Nom Complet")
+        adresse = st.text_input("Adresse de Livraison")
         
-        if st.button("🚀 Commander via WhatsApp"):
+        if st.button("🚀 VALIDER LA COMMANDE"):
             if nom and adresse:
-                # Lien WhatsApp
-                items_text = "%0A".join([f"- {i['nom']} ({i['prix']} FCFA)" for i in st.session_state.cart])
-                msg = f"Bonjour Awa's House, je souhaite commander :%0A{items_text}%0A%0ATotal : {total:,} FCFA%0A%0ANom : {nom}%0AAdresse : {adresse}"
+                # Préparation message WhatsApp
+                liste_achats = "%0A".join([f"- {i['nom']} ({i['prix']} FCFA)" for i in st.session_state.cart])
+                msg = f"Bonjour Awa's House, je commande :%0A{liste_achats}%0A%0ATotal : {total:,} FCFA%0A%0ANom : {nom}%0AAdresse : {adresse}"
                 st.markdown(f'<meta http-equiv="refresh" content="0;URL=https://wa.me/22177XXXXXXX?text={msg}">', unsafe_allow_html=True)
             else:
-                st.warning("Remplissez vos infos !")
+                st.error("Remplissez vos infos !")
         if st.button("Vider le panier"):
             st.session_state.cart = []
             st.rerun()
 
 # 4. MEILLEURES VENTES
-st.markdown('<div class="section-title">Nos Meilleures Ventes</div>', unsafe_allow_html=True)
+st.markdown("<div class='section-header'>Les Meilleurs</div>", unsafe_allow_html=True)
 v_cols = st.columns(4)
 ventes = [
     {"n": "Voile Jersey", "p": "1.500", "i": "https://images.unsplash.com/photo-1583939003579-730e3918a45a?w=400"},
@@ -152,15 +191,15 @@ ventes = [
 
 for idx, p in enumerate(ventes):
     with v_cols[idx]:
-        st.markdown(f'<div class="product-card"><img src="{p["i"]}" style="width:100%; border-radius:5px;"><div style="font-weight:600; margin-top:10px;">{p["n"]}</div><div class="price-tag">{p["p"]} FCFA</div></div>', unsafe_allow_html=True)
-        st.button(f"Prendre {p['n']}", key=f"v_{idx}", on_click=add_item, args=(p['n'], p['p']))
+        st.markdown(f'<div class="product-box"><div class="price-overlay">{p["p"]}</div><img src="{p["i"]}"><div style="padding:15px; font-weight:600;">{p["n"]}</div></div>', unsafe_allow_html=True)
+        st.button(f"Prendre {p['n']}", key=f"v_{idx}", on_click=add_to_cart, args=(p['n'], p['p']))
 
-# 5. NOS VOILES (Section Catalogue)
-st.markdown('<br><br><div class="section-title">Catalogue Voiles</div>', unsafe_allow_html=True)
+# 5. NOS VOILES (Catalogue Complet)
+st.markdown("<div class='section-header'>Nos Voiles</div>", unsafe_allow_html=True)
 c_cols = st.columns(2)
 voiles = [
     {"n": "Cachemire", "p": "1.500", "i": "https://images.unsplash.com/photo-1620799140408-edc6dcb6d633?w=800"},
-    {"n": "Jersey", "p": "1.500", "i": "https://images.unsplash.com/photo-1584030373081-f37b7bb4fa8e?w=800"},
+    {"n": "Jersey Noir", "p": "1.500", "i": "https://images.unsplash.com/photo-1584030373081-f37b7bb4fa8e?w=800"},
     {"n": "Soie Royale", "p": "3.500", "i": "https://images.unsplash.com/photo-1533090481720-856c6e3c1fdc?w=800"},
     {"n": "Chouchou Satin", "p": "500", "i": "https://images.unsplash.com/photo-1605810756711-645391a61044?w=800"}
 ]
@@ -168,8 +207,17 @@ voiles = [
 for idx, p in enumerate(voiles):
     target = c_cols[0] if idx % 2 == 0 else c_cols[1]
     with target:
-        st.markdown(f'<div class="product-card"><img src="{p["i"]}" style="width:100%; height:400px; object-fit:cover; border-radius:5px;"><div style="font-size:20px; font-family:Cormorant Garamond; font-weight:600; margin-top:15px;">{p["n"]}</div><div class="price-tag">{p["p"]} FCFA</div></div>', unsafe_allow_html=True)
-        st.button(f"Ajouter {p['n']} au panier", key=f"c_{idx}", on_click=add_item, args=(p['n'], p['p']))
+        st.markdown(f"""
+        <div class="product-box">
+            <div class="price-overlay">{p['p']} FCFA</div>
+            <img src="{p['i']}" style="height:600px;">
+            <div style="padding:30px;">
+                <h1 style="font-family:Playfair Display; font-style:italic; font-size:40px; margin:0; color:#D4AF37;">{p['n']}</h1>
+                <p style="opacity:0.5; letter-spacing:5px; font-size:10px;">COLLECTION EXCLUSIVE</p>
+            </div>
+        </div>
+        """, unsafe_allow_html=True)
+        st.button(f"AJOUTER {p['n'].upper()}", key=f"c_{idx}", on_click=add_to_cart, args=(p['n'], p['p']))
 
 # 6. FOOTER
-st.markdown('<div style="text-align:center; padding:50px; color:#aaa; font-size:10px; letter-spacing:2px;">AWA\'S HOUSE © 2026 • DAKAR • PARIS</div>', unsafe_allow_html=True)
+st.markdown('<div style="text-align:center; padding:100px 0; border-top:1px solid #222; margin-top:100px;"><h1 style="font-family:Syncopate; color:#D4AF37;">AWA\'S HOUSE</h1><p style="letter-spacing:15px; opacity:0.3;">DAKAR • DUBAI • PARIS</p></div>', unsafe_allow_html=True)
