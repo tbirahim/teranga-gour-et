@@ -1,204 +1,204 @@
 import streamlit as st
-import time
 
-# Configuration de la page
-st.set_page_config(page_title="Awa's House | Maison de Luxe", page_icon="👑", layout="wide")
+# Configuration
+st.set_page_config(page_title="AWA'S HOUSE | LUXURY HUB", layout="wide")
 
 # ---------------------------------------------------------
-# DESIGN ULTRA-PRO & ATTRAYANT (CSS AVANCÉ)
+# LE DESIGN "MAJESTIC" (CSS HAUTE COUTURE)
 # ---------------------------------------------------------
 st.markdown("""
 <style>
-    @import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700&family=Montserrat:wght@300;400;600&family=Great+Vibes&display=swap');
+    @import url('https://fonts.googleapis.com/css2?family=Bodoni+Moda:ital,wght@0,400;0,900;1,400&family=Montserrat:wght@100;300;400;600&display=swap');
 
-    /* Fond et Police Générale */
+    /* Variables de couleurs */
+    :root {
+        --gold: #D4AF37;
+        --dark: #0A0A0A;
+        --cream: #F5F5F0;
+    }
+
+    /* Fond principal avec un dégradé subtil */
     [data-testid="stAppViewContainer"] {
-        background: #ffffff;
+        background: linear-gradient(135deg, #0A0A0A 0%, #1A1A1A 100%);
+        color: white;
         font-family: 'Montserrat', sans-serif;
     }
 
-    /* Hero Section (Bannière d'entrée) */
-    .hero-container {
-        background-image: linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.5)), 
-                          url('https://images.unsplash.com/photo-1606293926075-69a00dbfde81?q=80&w=1920&auto=format&fit=crop');
-        background-size: cover;
-        background-position: center;
-        height: 500px;
-        display: flex;
-        flex-direction: column;
-        justify-content: center;
-        align-items: center;
-        color: white;
+    /* Sidebar Ultra Dark */
+    [data-testid="stSidebar"] {
+        background-color: #000000 !important;
+        border-right: 1px solid var(--gold);
+    }
+
+    /* HEADER TITRE MAGALINE */
+    .mag-header {
         text-align: center;
-        border-radius: 0 0 50px 50px;
-        margin-bottom: 50px;
-        box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+        padding: 60px 0;
+        border-bottom: 1px solid rgba(212, 175, 55, 0.3);
+        margin-bottom: 40px;
     }
 
-    .hero-title {
-        font-family: 'Great Vibes', cursive;
-        font-size: 80px;
-        margin-bottom: 0px;
-        color: #D4AF37; /* Or */
-    }
-
-    .hero-subtitle {
-        font-family: 'Cinzel', serif;
-        font-size: 25px;
-        letter-spacing: 5px;
+    .mag-title {
+        font-family: 'Bodoni Moda', serif;
+        font-size: 100px;
+        font-weight: 900;
+        letter-spacing: -5px;
+        color: var(--gold);
+        line-height: 0.8;
         text-transform: uppercase;
+        margin-bottom: 10px;
     }
 
-    /* Cartes Produits Stylées */
-    .st-emotion-cache-1r6sl7u { /* Container des colonnes */
-        padding: 10px;
+    .mag-subtitle {
+        font-family: 'Montserrat', sans-serif;
+        font-size: 14px;
+        letter-spacing: 10px;
+        text-transform: uppercase;
+        color: white;
+        opacity: 0.8;
     }
 
-    .product-box {
-        border-radius: 15px;
+    /* CARTES PRODUITS GLASSMORPHISM */
+    .product-card {
+        background: rgba(255, 255, 255, 0.03);
+        backdrop-filter: blur(10px);
+        border: 1px solid rgba(212, 175, 55, 0.2);
+        border-radius: 0px; /* Style minimaliste chic */
+        padding: 0px;
+        transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+        position: relative;
         overflow: hidden;
-        background: white;
-        padding-bottom: 20px;
-        transition: 0.4s;
-        border: 1px solid #f0f0f0;
-        text-align: center;
-        box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+        margin-bottom: 30px;
     }
 
-    .product-box:hover {
-        transform: scale(1.03);
-        box-shadow: 0 15px 30px rgba(0,0,0,0.1);
-        border: 1px solid #D4AF37;
+    .product-card:hover {
+        border-color: var(--gold);
+        transform: translateY(-10px);
+        background: rgba(212, 175, 55, 0.05);
+    }
+
+    .product-img {
+        width: 100%;
+        height: 450px;
+        object-fit: cover;
+        filter: grayscale(40%);
+        transition: 0.5s;
+    }
+
+    .product-card:hover .product-img {
+        filter: grayscale(0%);
+        transform: scale(1.05);
+    }
+
+    .product-info {
+        padding: 20px;
+        text-align: center;
+    }
+
+    .product-name {
+        font-family: 'Bodoni Moda', serif;
+        font-size: 24px;
+        margin-bottom: 5px;
     }
 
     .product-price {
-        color: #D4AF37;
-        font-weight: bold;
+        color: var(--gold);
+        font-family: 'Bodoni Moda', serif;
+        font-style: italic;
         font-size: 20px;
-        font-family: 'Cinzel', serif;
     }
 
-    /* Boutons de Luxe */
+    /* BOUTON LUXE */
     div.stButton > button {
-        background: linear-gradient(135deg, #1a1a1a 0%, #333 100%);
-        color: white !important;
-        border: none !important;
-        border-radius: 25px !important;
-        padding: 10px 25px !important;
-        font-weight: 600 !important;
-        letter-spacing: 1px;
-        transition: 0.3s !important;
-        width: 80% !important;
-        display: block;
-        margin: 0 auto;
+        background: transparent !important;
+        color: var(--gold) !important;
+        border: 1px solid var(--gold) !important;
+        border-radius: 0px !important;
+        text-transform: uppercase !important;
+        letter-spacing: 2px !important;
+        font-size: 12px !important;
+        padding: 12px 20px !important;
+        width: 100% !important;
+        transition: 0.4s !important;
     }
 
     div.stButton > button:hover {
-        background: #D4AF37 !important;
+        background: var(--gold) !important;
         color: black !important;
-        box-shadow: 0 5px 15px rgba(212, 175, 55, 0.4);
+        box-shadow: 0 0 20px rgba(212, 175, 55, 0.4) !important;
     }
 
-    /* Sidebar élégante */
-    [data-testid="stSidebar"] {
-        background-color: #1a1a1a;
-        color: white;
-    }
+    /* Masquer les éléments inutiles de Streamlit */
+    #MainMenu {visibility: hidden;}
+    footer {visibility: hidden;}
+    header {visibility: hidden;}
+
 </style>
 """, unsafe_allow_html=True)
 
 # ---------------------------------------------------------
-# DONNÉES & LOGIQUE
+# NAVIGATION SIDEBAR
 # ---------------------------------------------------------
-if "panier" not in st.session_state:
-    st.session_state.panier = {}
-
-produits = [
-    {"id": 1, "nom": "Voile Soie d'Or", "prix": 5500, "img": "https://images.unsplash.com/photo-1584030373081-f37b7bb4fa8e?w=500"},
-    {"id": 2, "nom": "Abaya Crystal", "prix": 15000, "img": "https://images.unsplash.com/photo-1621184455862-c163dfb30e0f?w=500"},
-    {"id": 3, "nom": "Oud Impérial", "prix": 8500, "img": "https://images.unsplash.com/photo-1594035910387-fea47794261f?w=500"},
-    {"id": 4, "nom": "Coffret Prestige", "prix": 25000, "img": "https://images.unsplash.com/photo-1549465220-1a8b9238cd48?w=500"},
-]
-
-def add_to_cart(p_name, p_price):
-    if p_name in st.session_state.panier:
-        st.session_state.panier[p_name]['qty'] += 1
-    else:
-        st.session_state.panier[p_name] = {'price': p_price, 'qty': 1}
-    st.toast(f"✅ {p_name} ajouté !", icon="✨")
-
-# ---------------------------------------------------------
-# STRUCTURE DE LA PAGE
-# ---------------------------------------------------------
-
-# Sidebar
 with st.sidebar:
-    st.markdown("<h1 style='color:#D4AF37;'>Awa's House</h1>", unsafe_allow_html=True)
-    menu = st.radio("Navigation", ["La Maison", "Collection", "Mon Panier"])
-    st.write("---")
-    st.write("📍 Dakar, Plateau\n\n📞 +221 77 XXX XX XX")
+    st.markdown("<br><br>", unsafe_allow_html=True)
+    st.markdown("<h2 style='color:white; text-align:center;'>AWA'S</h2>", unsafe_allow_html=True)
+    page = st.radio("SÉLECTION", ["L'ÉDITO", "BOUTIQUE", "PANIER"], label_visibility="collapsed")
+    st.markdown("<br><br><br><p style='text-align:center; color:#444;'>Dakar | Paris | Dubai</p>", unsafe_allow_html=True)
 
-# PAGE ACCUEIL (HERO SECTION)
-if menu == "La Maison":
-    st.markdown("""
-    <div class="hero-container">
-        <div class="hero-title">Awa's House</div>
-        <div class="hero-subtitle">L'Excellence de la Pudeur</div>
-        <p style="max-width:600px; margin-top:20px;">Découvrez des pièces uniques conçues pour la femme moderne qui ne fait aucun compromis entre foi et élégance.</p>
-    </div>
-    """, unsafe_allow_html=True)
-    
-    col1, col2 = st.columns(2)
+# ---------------------------------------------------------
+# CONTENU
+# ---------------------------------------------------------
+
+# Header Type Magazine
+st.markdown("""
+<div class="mag-header">
+    <div class="mag-title">Awa's House</div>
+    <div class="mag-subtitle">Maison de Couture & Raffinement</div>
+</div>
+""", unsafe_allow_html=True)
+
+if page == "L'ÉDITO":
+    col1, col2 = st.columns([2, 1])
     with col1:
-        st.image("https://images.unsplash.com/photo-1533090481720-856c6e3c1fdc?w=800", caption="Nouvelle Collection")
+        st.image("https://images.unsplash.com/photo-1618220179428-22790b461013?w=1200", use_container_width=True)
     with col2:
         st.markdown("<br><br>", unsafe_allow_html=True)
-        st.h3("L'art du détail")
-        st.write("Chaque tissu est sélectionné avec soin, chaque perle est posée à la main. Notre mission est de vous faire briller.")
-        if st.button("Voir la Collection"):
-            st.info("Utilisez le menu à gauche pour naviguer !")
+        st.markdown("<h1 style='font-family:Bodoni Moda;'>L'Élégance Pure</h1>", unsafe_allow_html=True)
+        st.write("""
+        Plus qu'une boutique, une vision. Nous redéfinissons la pudeur par le prisme du luxe. 
+        Chaque pièce de notre nouvelle collection "Sahara Glow" est une ode à la féminité sereine.
+        """)
+        st.markdown("<h2 style='color:#D4AF37;'>✨</h2>", unsafe_allow_html=True)
 
-# PAGE BOUTIQUE
-elif menu == "Collection":
-    st.markdown("<h1 style='text-align:center; font-family:Cinzel;'>Nos Exclusivités</h1>", unsafe_allow_html=True)
-    st.markdown("<p style='text-align:center;'>Livraison express en 24h sur Dakar</p><br>", unsafe_allow_html=True)
-    
-    cols = st.columns(2) # 2 colonnes pour des images plus grandes et plus "impactantes"
+elif page == "BOUTIQUE":
+    # Liste de produits
+    produits = [
+        {"nom": "Kaftan Signature Noir", "prix": "75.000", "img": "https://images.unsplash.com/photo-1567344231471-4571aebc888a?w=600"},
+        {"nom": "Voile de Soie Brute", "prix": "12.500", "img": "https://images.unsplash.com/photo-1584030373081-f37b7bb4fa8e?w=600"},
+        {"nom": "Abaya Perle d'Orient", "prix": "45.000", "img": "https://images.unsplash.com/photo-1621184455862-c163dfb30e0f?w=600"},
+        {"nom": "Parfum d'Oud Or", "prix": "35.000", "img": "https://images.unsplash.com/photo-1594035910387-fea47794261f?w=600"}
+    ]
+
+    cols = st.columns(2) # 2 par ligne pour garder le côté "Grand Luxe"
     
     for i, p in enumerate(produits):
         with cols[i % 2]:
             st.markdown(f"""
-            <div class="product-box">
-                <img src="{p['img']}" style="width:100%; height:350px; object-fit:cover;">
-                <h3 style="font-family:Cinzel; margin-top:15px;">{p['nom']}</h3>
-                <p class="product-price">{p['prix']} FCFA</p>
+            <div class="product-card">
+                <img src="{p['img']}" class="product-img">
+                <div class="product-info">
+                    <div class="product-name">{p['nom']}</div>
+                    <div class="product-price">{p['prix']} FCFA</div>
+                </div>
             </div>
             """, unsafe_allow_html=True)
-            st.button(f"Acquérir - {p['nom']}", key=f"btn_{p['id']}", on_click=add_to_cart, args=(p['nom'], p['prix']))
-            st.markdown("<br>", unsafe_allow_html=True)
+            if st.button(f"SÉLECTIONNER — {p['nom']}", key=f"btn_{i}"):
+                st.toast(f"{p['nom']} ajouté à votre collection.", icon="💎")
 
-# PAGE PANIER
-elif menu == "Mon Panier":
-    st.markdown("<h1 style='font-family:Cinzel;'>Votre Sélection</h1>", unsafe_allow_html=True)
-    
-    if not st.session_state.panier:
-        st.write("Votre sélection est vide pour le moment.")
-    else:
-        total = 0
-        for item, info in st.session_state.panier.items():
-            sous_total = info['price'] * info['qty']
-            total += sous_total
-            st.markdown(f"""
-            <div style="display:flex; justify-content:space-between; padding:10px; border-bottom:1px solid #eee;">
-                <span><b>{item}</b> (x{info['qty']})</span>
-                <span style="color:#D4AF37;">{sous_total} FCFA</span>
-            </div>
-            """, unsafe_allow_html=True)
-        
-        st.markdown(f"<h2 style='text-align:right;'>Total: {total} FCFA</h2>", unsafe_allow_html=True)
-        if st.button("Passer la commande via WhatsApp 📲"):
-            st.success("Redirection vers WhatsApp...")
-            st.balloons()
+elif page == "PANIER":
+    st.markdown("<h1 style='font-family:Bodoni Moda; text-align:center;'>Votre Sélection Privée</h1>", unsafe_allow_html=True)
+    st.info("Votre panier est en attente de validation.")
+    st.markdown("<br><center><button style='background:white; color:black; border:none; padding:15px 40px; font-weight:bold; letter-spacing:2px;'>COMMANDER MAINTENANT</button></center>", unsafe_allow_html=True)
 
 # Footer
-st.markdown("<br><br><div style='text-align:center; color:#aaa;'>— Awa's House Luxury —</div>", unsafe_allow_html=True)
+st.markdown("<br><br><p style='text-align:center; opacity:0.3; font-size:10px; letter-spacing:3px;'>MADE FOR AWA'S HOUSE LUXURY HUB © 2026</p>", unsafe_allow_html=True)
