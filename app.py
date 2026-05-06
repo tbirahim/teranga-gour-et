@@ -1,223 +1,204 @@
 import streamlit as st
 import time
 
-# ------------------------
-# CONFIGURATION DE LA PAGE
-# ------------------------
-st.set_page_config(page_title="Awa's House | Boutique Premium", page_icon="✨", layout="wide")
+# Configuration de la page
+st.set_page_config(page_title="Awa's House | Maison de Luxe", page_icon="👑", layout="wide")
 
-# ------------------------
-# STYLE CSS PREMIUM
-# ------------------------
+# ---------------------------------------------------------
+# DESIGN ULTRA-PRO & ATTRAYANT (CSS AVANCÉ)
+# ---------------------------------------------------------
 st.markdown("""
 <style>
-    @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;1,400&family=Poppins:wght@300;400;500&display=swap');
+    @import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700&family=Montserrat:wght@300;400;600&family=Great+Vibes&display=swap');
 
-    /* Fond global et typographie */
+    /* Fond et Police Générale */
     [data-testid="stAppViewContainer"] {
-        background-color: #FCFBF9;
-        font-family: 'Poppins', sans-serif;
-    }
-    
-    /* Titres élégants */
-    h1, h2, h3 {
-        font-family: 'Playfair Display', serif !important;
-        color: #1A1A1A;
+        background: #ffffff;
+        font-family: 'Montserrat', sans-serif;
     }
 
-    /* Style des boutons Streamlit pour un effet Luxe */
-    div.stButton > button:first-child {
-        background-color: #1A1A1A;
-        color: #FFFFFF;
-        border: 1px solid #1A1A1A;
-        border-radius: 0px; /* Bordures carrées pour un style éditorial/luxe */
-        padding: 10px 24px;
-        width: 100%;
-        font-weight: 500;
-        letter-spacing: 1px;
-        text-transform: uppercase;
-        font-size: 12px;
-        transition: all 0.4s ease;
-    }
-    
-    div.stButton > button:first-child:hover {
-        background-color: #C59D5F;
+    /* Hero Section (Bannière d'entrée) */
+    .hero-container {
+        background-image: linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.5)), 
+                          url('https://images.unsplash.com/photo-1606293926075-69a00dbfde81?q=80&w=1920&auto=format&fit=crop');
+        background-size: cover;
+        background-position: center;
+        height: 500px;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
         color: white;
-        border-color: #C59D5F;
-        transform: translateY(-2px);
-        box-shadow: 0px 8px 15px rgba(197, 157, 95, 0.2);
+        text-align: center;
+        border-radius: 0 0 50px 50px;
+        margin-bottom: 50px;
+        box-shadow: 0 10px 30px rgba(0,0,0,0.2);
     }
 
-    /* Couleurs personnalisées pour les textes spécifiques */
-    .brand-title {
-        text-align: center;
-        font-size: 3.5rem;
-        font-weight: 600;
+    .hero-title {
+        font-family: 'Great Vibes', cursive;
+        font-size: 80px;
         margin-bottom: 0px;
-        padding-bottom: 0px;
+        color: #D4AF37; /* Or */
     }
-    .brand-subtitle {
+
+    .hero-subtitle {
+        font-family: 'Cinzel', serif;
+        font-size: 25px;
+        letter-spacing: 5px;
+        text-transform: uppercase;
+    }
+
+    /* Cartes Produits Stylées */
+    .st-emotion-cache-1r6sl7u { /* Container des colonnes */
+        padding: 10px;
+    }
+
+    .product-box {
+        border-radius: 15px;
+        overflow: hidden;
+        background: white;
+        padding-bottom: 20px;
+        transition: 0.4s;
+        border: 1px solid #f0f0f0;
         text-align: center;
-        color: #C59D5F;
-        font-family: 'Playfair Display', serif;
-        font-style: italic;
-        font-size: 1.2rem;
-        margin-top: -10px;
-        margin-bottom: 40px;
+        box-shadow: 0 5px 15px rgba(0,0,0,0.05);
     }
-    .price-tag {
-        color: #C59D5F;
-        font-weight: 600;
-        font-size: 1.2rem;
-        margin-top: -10px;
-        margin-bottom: 15px;
+
+    .product-box:hover {
+        transform: scale(1.03);
+        box-shadow: 0 15px 30px rgba(0,0,0,0.1);
+        border: 1px solid #D4AF37;
+    }
+
+    .product-price {
+        color: #D4AF37;
+        font-weight: bold;
+        font-size: 20px;
+        font-family: 'Cinzel', serif;
+    }
+
+    /* Boutons de Luxe */
+    div.stButton > button {
+        background: linear-gradient(135deg, #1a1a1a 0%, #333 100%);
+        color: white !important;
+        border: none !important;
+        border-radius: 25px !important;
+        padding: 10px 25px !important;
+        font-weight: 600 !important;
+        letter-spacing: 1px;
+        transition: 0.3s !important;
+        width: 80% !important;
+        display: block;
+        margin: 0 auto;
+    }
+
+    div.stButton > button:hover {
+        background: #D4AF37 !important;
+        color: black !important;
+        box-shadow: 0 5px 15px rgba(212, 175, 55, 0.4);
+    }
+
+    /* Sidebar élégante */
+    [data-testid="stSidebar"] {
+        background-color: #1a1a1a;
+        color: white;
     }
 </style>
 """, unsafe_allow_html=True)
 
-# ------------------------
-# DATA DES PRODUITS
-# ------------------------
+# ---------------------------------------------------------
+# DONNÉES & LOGIQUE
+# ---------------------------------------------------------
+if "panier" not in st.session_state:
+    st.session_state.panier = {}
+
 produits = [
-    {"nom": "Voile Jersey Premium", "prix": 1500, "image": "https://images.unsplash.com/photo-1584030373081-f37b7bb4fa8e?auto=format&fit=crop&w=600&q=80", "desc": "Doux, extensible et opaque."},
-    {"nom": "Pashmina Luxe", "prix": 3000, "image": "https://images.unsplash.com/photo-1606293926075-69a00dbfde81?auto=format&fit=crop&w=600&q=80", "desc": "Chaud et élégant pour vos soirées."},
-    {"nom": "Soie de Médine Élégante", "prix": 3500, "image": "https://images.unsplash.com/photo-1533090481720-856c6e3c1fdc?auto=format&fit=crop&w=600&q=80", "desc": "Le summum du raffinement."},
-    {"nom": "Chouchou Satin Volumineux", "prix": 500, "image": "https://images.unsplash.com/photo-1605810756711-645391a61044?auto=format&fit=crop&w=600&q=80", "desc": "Protège vos cheveux avec style."},
-    {"nom": "Extrait de Parfum Oud", "prix": 2500, "image": "https://images.unsplash.com/photo-1594035910387-fea47794261f?auto=format&fit=crop&w=600&q=80", "desc": "Des notes boisées et orientales intenses."},
-    {"nom": "Coffret Cadeau Awa", "prix": 8000, "image": "https://images.unsplash.com/photo-1549465220-1a8b9238cd48?auto=format&fit=crop&w=600&q=80", "desc": "Le cadeau parfait à offrir."}
+    {"id": 1, "nom": "Voile Soie d'Or", "prix": 5500, "img": "https://images.unsplash.com/photo-1584030373081-f37b7bb4fa8e?w=500"},
+    {"id": 2, "nom": "Abaya Crystal", "prix": 15000, "img": "https://images.unsplash.com/photo-1621184455862-c163dfb30e0f?w=500"},
+    {"id": 3, "nom": "Oud Impérial", "prix": 8500, "img": "https://images.unsplash.com/photo-1594035910387-fea47794261f?w=500"},
+    {"id": 4, "nom": "Coffret Prestige", "prix": 25000, "img": "https://images.unsplash.com/photo-1549465220-1a8b9238cd48?w=500"},
 ]
 
-# ------------------------
-# LOGIQUE DU PANIER (SESSION STATE)
-# ------------------------
-if "panier" not in st.session_state:
-    st.session_state.panier = {} # Dictionnaire pour gérer les quantités
-
-def ajouter_au_panier(nom, prix):
-    if nom in st.session_state.panier:
-        st.session_state.panier[nom]["quantite"] += 1
+def add_to_cart(p_name, p_price):
+    if p_name in st.session_state.panier:
+        st.session_state.panier[p_name]['qty'] += 1
     else:
-        st.session_state.panier[nom] = {"prix": prix, "quantite": 1}
-    st.toast(f"✨ {nom} ajouté à votre panier !", icon="🛍️")
+        st.session_state.panier[p_name] = {'price': p_price, 'qty': 1}
+    st.toast(f"✅ {p_name} ajouté !", icon="✨")
 
-# ------------------------
-# SIDEBAR (MENU & RESUME PANIER)
-# ------------------------
+# ---------------------------------------------------------
+# STRUCTURE DE LA PAGE
+# ---------------------------------------------------------
+
+# Sidebar
 with st.sidebar:
-    st.markdown("<h2 style='text-align: center; color: #C59D5F;'>Menu</h2>", unsafe_allow_html=True)
-    menu = st.radio("Navigation", ["Accueil", "Boutique", "Mon Panier"], label_visibility="collapsed")
-    
-    st.markdown("---")
-    st.markdown("### 🛒 Résumé")
-    total_articles = sum(item["quantite"] for item in st.session_state.panier.values())
-    st.write(f"**Articles :** {total_articles}")
-    if total_articles > 0:
-        st.info("Allez dans 'Mon Panier' pour finaliser votre commande.")
+    st.markdown("<h1 style='color:#D4AF37;'>Awa's House</h1>", unsafe_allow_html=True)
+    menu = st.radio("Navigation", ["La Maison", "Collection", "Mon Panier"])
+    st.write("---")
+    st.write("📍 Dakar, Plateau\n\n📞 +221 77 XXX XX XX")
 
-# ------------------------
-# HEADER GLOBAL
-# ------------------------
-st.markdown("<div class='brand-title'>Awa's House</div>", unsafe_allow_html=True)
-st.markdown("<div class='brand-subtitle'>Élégance, Pudeur & Raffinement</div>", unsafe_allow_html=True)
-
-# ------------------------
-# PAGE: ACCUEIL
-# ------------------------
-if menu == "Accueil":
-    # Image Hero (Bannière)
-    st.image("https://images.unsplash.com/photo-1490481651871-ab68de25d43d?auto=format&fit=crop&w=1600&q=80", use_container_width=True)
+# PAGE ACCUEIL (HERO SECTION)
+if menu == "La Maison":
+    st.markdown("""
+    <div class="hero-container">
+        <div class="hero-title">Awa's House</div>
+        <div class="hero-subtitle">L'Excellence de la Pudeur</div>
+        <p style="max-width:600px; margin-top:20px;">Découvrez des pièces uniques conçues pour la femme moderne qui ne fait aucun compromis entre foi et élégance.</p>
+    </div>
+    """, unsafe_allow_html=True)
     
-    st.markdown("<br>", unsafe_allow_html=True)
-    col1, col2, col3 = st.columns([1, 2, 1])
+    col1, col2 = st.columns(2)
+    with col1:
+        st.image("https://images.unsplash.com/photo-1533090481720-856c6e3c1fdc?w=800", caption="Nouvelle Collection")
     with col2:
-        st.markdown("""
-        <h3 style='text-align:center;'>Bienvenue dans notre univers</h3>
-        <p style='text-align:center; color:#555;'>
-        Chez <b>Awa's House</b>, nous croyons que la modestie rime avec élégance. 
-        Découvrez notre sélection rigoureuse de voiles haut de gamme, d'accessoires délicats 
-        et de parfums enivrants, pensés pour sublimer votre quotidien.
-        </p>
-        """, unsafe_allow_html=True)
+        st.markdown("<br><br>", unsafe_allow_html=True)
+        st.h3("L'art du détail")
+        st.write("Chaque tissu est sélectionné avec soin, chaque perle est posée à la main. Notre mission est de vous faire briller.")
+        if st.button("Voir la Collection"):
+            st.info("Utilisez le menu à gauche pour naviguer !")
 
-# ------------------------
-# PAGE: BOUTIQUE
-# ------------------------
-elif menu == "Boutique":
-    st.markdown("## 🛍️ Notre Collection")
-    st.write("Trouvez la pièce parfaite parmi notre sélection de produits de qualité.")
-    st.markdown("<br>", unsafe_allow_html=True)
-
-    # Affichage en grille de 3 colonnes
-    cols = st.columns(3, gap="large")
-
+# PAGE BOUTIQUE
+elif menu == "Collection":
+    st.markdown("<h1 style='text-align:center; font-family:Cinzel;'>Nos Exclusivités</h1>", unsafe_allow_html=True)
+    st.markdown("<p style='text-align:center;'>Livraison express en 24h sur Dakar</p><br>", unsafe_allow_html=True)
+    
+    cols = st.columns(2) # 2 colonnes pour des images plus grandes et plus "impactantes"
+    
     for i, p in enumerate(produits):
-        with cols[i % 3]:
-            # Utilisation de st.container pour regrouper visuellement les infos
-            with st.container():
-                st.image(p['image'], use_container_width=True)
-                st.markdown(f"### {p['nom']}")
-                st.markdown(f"<p style='color:#777; font-size:0.9rem; margin-top:-10px;'>{p['desc']}</p>", unsafe_allow_html=True)
-                st.markdown(f"<div class='price-tag'>{p['prix']} FCFA</div>", unsafe_allow_html=True)
-                
-                # Bouton natif qui appelle la fonction d'ajout
-                st.button("Ajouter au panier", key=f"add_{i}", on_click=ajouter_au_panier, args=(p['nom'], p['prix']))
+        with cols[i % 2]:
+            st.markdown(f"""
+            <div class="product-box">
+                <img src="{p['img']}" style="width:100%; height:350px; object-fit:cover;">
+                <h3 style="font-family:Cinzel; margin-top:15px;">{p['nom']}</h3>
+                <p class="product-price">{p['prix']} FCFA</p>
+            </div>
+            """, unsafe_allow_html=True)
+            st.button(f"Acquérir - {p['nom']}", key=f"btn_{p['id']}", on_click=add_to_cart, args=(p['nom'], p['prix']))
             st.markdown("<br>", unsafe_allow_html=True)
 
-# ------------------------
-# PAGE: PANIER
-# ------------------------
+# PAGE PANIER
 elif menu == "Mon Panier":
-    st.markdown("## 🛒 Votre Panier")
+    st.markdown("<h1 style='font-family:Cinzel;'>Votre Sélection</h1>", unsafe_allow_html=True)
     
     if not st.session_state.panier:
-        st.info("Votre panier est actuellement vide. Visitez la Boutique pour y ajouter des merveilles ! ✨")
+        st.write("Votre sélection est vide pour le moment.")
     else:
         total = 0
-        
-        # Affichage propre sous forme de colonnes
-        col_nom, col_qty, col_prix = st.columns([3, 1, 1])
-        with col_nom: st.markdown("**Produit**")
-        with col_qty: st.markdown("**Quantité**")
-        with col_prix: st.markdown("**Sous-total**")
-        
-        st.markdown("---")
-        
-        for nom, details in st.session_state.panier.items():
-            sous_total = details["prix"] * details["quantite"]
+        for item, info in st.session_state.panier.items():
+            sous_total = info['price'] * info['qty']
             total += sous_total
-            
-            c1, c2, c3 = st.columns([3, 1, 1])
-            with c1: st.write(nom)
-            with c2: st.write(f"x {details['quantite']}")
-            with c3: st.write(f"{sous_total} FCFA")
-            
-        st.markdown("---")
+            st.markdown(f"""
+            <div style="display:flex; justify-content:space-between; padding:10px; border-bottom:1px solid #eee;">
+                <span><b>{item}</b> (x{info['qty']})</span>
+                <span style="color:#D4AF37;">{sous_total} FCFA</span>
+            </div>
+            """, unsafe_allow_html=True)
         
-        # Section Total
-        st.markdown(f"<h3 style='text-align: right;'>Total à régler : <span style='color: #C59D5F;'>{total} FCFA</span></h3>", unsafe_allow_html=True)
-        
-        st.markdown("<br>", unsafe_allow_html=True)
-        
-        # Bouton de paiement avec animation
-        col_empty, col_pay = st.columns([2, 1])
-        with col_pay:
-            if st.button("Valider la commande 💳"):
-                with st.spinner('Traitement de votre paiement en cours...'):
-                    time.sleep(2) # Simulation de chargement
-                st.success("Paiement validé avec succès ! Merci pour votre confiance ✅")
-                st.balloons()
-                # Optionnel : Vider le panier après paiement
-                st.session_state.panier = {}
-                st.rerun()
+        st.markdown(f"<h2 style='text-align:right;'>Total: {total} FCFA</h2>", unsafe_allow_html=True)
+        if st.button("Passer la commande via WhatsApp 📲"):
+            st.success("Redirection vers WhatsApp...")
+            st.balloons()
 
-# ------------------------
-# FOOTER GLOBAL
-# ------------------------
-st.markdown("<br><br><br>", unsafe_allow_html=True)
-st.markdown("---")
-st.markdown("""
-<div style='text-align: center; color: #888; font-size: 0.8rem;'>
-    © 2026 - <b>Awa's House</b><br>
-    Conçu avec élégance
-</div>
-""", unsafe_allow_html=True)
+# Footer
+st.markdown("<br><br><div style='text-align:center; color:#aaa;'>— Awa's House Luxury —</div>", unsafe_allow_html=True)
